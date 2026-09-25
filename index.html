@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAZORA — Ayollar uchun moda va go'zallik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF7F4;
+    --cream-deep:#F4EDE7;
+    --blush:#F1DEE3;
+    --rose:#C67B93;
+    --rose-deep:#7A2E43;
+    --gold:#AD8A56;
+    --charcoal:#2A211D;
+    --charcoal-soft:#5C4F49;
+    --line:#E5D9D1;
+    --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--charcoal);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{
+    font-family:'Playfair Display',serif;
+    font-weight:600;
+    margin:0;
+    color:var(--rose-deep);
+    letter-spacing:-0.01em;
+  }
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;margin:0;padding:0;}
+  button{font-family:inherit;cursor:pointer;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px;}
+  :focus-visible{outline:2px solid var(--rose-deep);outline-offset:3px;}
+
+  /* ---------- Announcement bar ---------- */
+  .announce{
+    background:var(--rose-deep);
+    color:var(--blush);
+    text-align:center;
+    font-size:13px;
+    padding:9px 16px;
+    letter-spacing:.01em;
+  }
+
+  /* ---------- Header ---------- */
+  header.site{
+    position:sticky;top:0;z-index:50;
+    background:rgba(251,247,244,.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 24px;max-width:1200px;margin:0 auto;
+  }
+  .logo{
+    font-family:'Playfair Display',serif;
+    font-size:26px;font-weight:700;color:var(--rose-deep);
+  }
+  .logo span{color:var(--gold);}
+  nav.links{display:flex;gap:34px;}
+  nav.links a{
+    font-size:14.5px;font-weight:500;color:var(--charcoal-soft);
+    position:relative;padding-bottom:4px;
+    transition:color .2s ease;
+  }
+  nav.links a:hover{color:var(--rose-deep);}
+  nav.links a::after{
+    content:'';position:absolute;left:0;bottom:0;width:0;height:1.5px;
+    background:var(--rose);transition:width .25s ease;
+  }
+  nav.links a:hover::after{width:100%;}
+  .nav-actions{display:flex;align-items:center;gap:18px;}
+  .icon-btn{
+    position:relative;width:38px;height:38px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--blush);border:none;color:var(--rose-deep);
+    transition:background .2s ease;
+  }
+  .icon-btn:hover{background:var(--rose);color:#fff;}
+  .cart-count{
+    position:absolute;top:-4px;right:-4px;
+    background:var(--rose-deep);color:#fff;font-size:10.5px;font-weight:700;
+    width:17px;height:17px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .tg-quick{
+    display:flex;align-items:center;gap:7px;
+    font-size:13.5px;font-weight:600;color:var(--rose-deep);
+    background:var(--white);border:1px solid var(--line);
+    padding:8px 14px;border-radius:100px;
+    transition:border-color .2s ease;
+  }
+  .tg-quick:hover{border-color:var(--rose);}
+  .burger{display:none;background:none;border:none;color:var(--rose-deep);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:64px 24px 88px;
+    max-width:1200px;margin:0 auto;
+    display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;
+  }
+  .hero-eyebrow{
+    font-size:14px;color:var(--gold);font-weight:600;
+    margin-bottom:18px;display:block;
+  }
+  .hero h1{
+    font-size:clamp(38px,4.6vw,58px);line-height:1.08;
+    margin-bottom:22px;
+  }
+  .hero p.lead{
+    font-size:17px;line-height:1.65;color:var(--charcoal-soft);
+    max-width:440px;margin-bottom:34px;
+  }
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--rose-deep);color:#fff;border:none;
+    padding:15px 30px;border-radius:100px;font-size:14.5px;font-weight:600;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .btn-primary:hover{background:#611f32;transform:translateY(-1px);}
+  .btn-secondary{
+    background:transparent;color:var(--rose-deep);
+    border:1.5px solid var(--rose-deep);
+    padding:14px 28px;border-radius:100px;font-size:14.5px;font-weight:600;
+    transition:background .2s ease;
+  }
+  .btn-secondary:hover{background:var(--blush);}
+  .hero-visual{
+    position:relative;
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  }
+  .hero-visual .tall{
+    grid-row:span 2;border-radius:26px 26px 26px 4px;
+    background:linear-gradient(160deg,var(--blush),var(--rose) 130%);
+    aspect-ratio:3/4.4;position:relative;overflow:hidden;
+  }
+  .hero-visual .short{
+    border-radius:26px 4px 26px 26px;
+    background:linear-gradient(150deg,var(--cream-deep),var(--gold) 160%);
+    aspect-ratio:1/1;
+  }
+  .hero-visual .short.two{
+    border-radius:4px 26px 26px 26px;
+    background:linear-gradient(200deg,#fff,var(--blush) 140%);
+    border:1px solid var(--line);
+  }
+  .swatch-float{
+    position:absolute;bottom:16px;left:16px;
+    background:rgba(255,255,255,.92);backdrop-filter:blur(6px);
+    border-radius:14px;padding:10px 14px;
+    box-shadow:0 10px 30px rgba(122,46,67,.12);
+    font-size:12.5px;color:var(--charcoal-soft);
+  }
+  .swatch-float strong{display:block;color:var(--rose-deep);font-size:14px;font-family:'Playfair Display',serif;}
+
+  /* ---------- Category grid (editorial, asymmetric) ---------- */
+  .section-head{
+    text-align:left;margin-bottom:38px;
+  }
+  .section-head h2{font-size:clamp(28px,3vw,36px);}
+  .section-head p{color:var(--charcoal-soft);font-size:15px;margin-top:8px;max-width:480px;}
+  .categories{padding:20px 24px 90px;max-width:1200px;margin:0 auto;}
+  .cat-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    grid-template-rows:180px 180px;
+    gap:16px;
+  }
+  .cat-card{
+    position:relative;border-radius:20px;overflow:hidden;
+    display:flex;align-items:flex-end;padding:22px;color:#fff;
+    transition:transform .3s ease;
+  }
+  .cat-card:hover{transform:translateY(-3px);}
+  .cat-card.c1{grid-row:span 2;background:linear-gradient(155deg,#D89AAE,#7A2E43);}
+  .cat-card.c2{background:linear-gradient(155deg,#E8CBA0,#AD8A56);}
+  .cat-card.c3{background:linear-gradient(155deg,#D8C8E0,#8F6E9C);}
+  .cat-card.c4{background:linear-gradient(155deg,#CFAF8E,#6E5237);}
+  .cat-card.c5{background:linear-gradient(155deg,#E3B7C4,#B45C79);}
+  .cat-card h3{color:#fff;font-size:21px;}
+  .cat-card span{font-size:12.5px;opacity:.85;font-weight:500;margin-top:4px;display:block;}
+  .chip-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;}
+  .chip{
+    border:1px solid var(--line);background:var(--white);
+    padding:9px 18px;border-radius:100px;font-size:13.5px;font-weight:500;
+    color:var(--charcoal-soft);transition:all .2s ease;
+  }
+  .chip:hover,.chip.active{background:var(--rose-deep);color:#fff;border-color:var(--rose-deep);}
+
+  /* ---------- Catalog ---------- */
+  .catalog{padding:20px 24px 100px;max-width:1200px;margin:0 auto;}
+  .filter-bar{
+    display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+    padding:18px 20px;background:var(--white);border:1px solid var(--line);
+    border-radius:18px;margin-bottom:34px;
+  }
+  .filter-bar select{
+    border:1px solid var(--line);background:var(--cream);
+    padding:10px 14px;border-radius:10px;font-size:13.5px;color:var(--charcoal);
+    font-family:inherit;
+  }
+  .filter-bar label{font-size:12.5px;color:var(--charcoal-soft);display:block;margin-bottom:5px;font-weight:500;}
+  .filter-group{display:flex;flex-direction:column;}
+  .filter-reset{
+    margin-left:auto;font-size:13px;color:var(--rose-deep);font-weight:600;
+    background:none;border:none;
+  }
+  .product-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:22px;
+  }
+  .p-card{
+    background:var(--white);border:1px solid var(--line);border-radius:18px;
+    overflow:hidden;display:flex;flex-direction:column;
+    transition:box-shadow .25s ease, transform .25s ease;
+  }
+  .p-card:hover{box-shadow:0 18px 40px rgba(122,46,67,.1);transform:translateY(-2px);}
+  .p-media{
+    aspect-ratio:3/3.6;position:relative;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;font-style:italic;color:rgba(255,255,255,.85);
+    font-size:15px;text-align:center;padding:14px;
+  }
+  .p-media .stock-tag{
+    position:absolute;top:12px;left:12px;
+    background:rgba(255,255,255,.92);color:var(--rose-deep);
+    font-size:11px;font-weight:700;padding:5px 10px;border-radius:100px;
+  }
+  .p-media .stock-tag.low{color:#9A5A1A;}
+  .p-media .stock-tag.order{color:#7A2E43;background:rgba(255,255,255,.85);}
+  .p-body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:8px;flex:1;}
+  .p-brand{font-size:11.5px;color:var(--gold);font-weight:700;}
+  .p-title{font-family:'Playfair Display',serif;font-size:16.5px;color:var(--charcoal);font-weight:600;line-height:1.3;}
+  .p-swatches{display:flex;gap:6px;margin:2px 0;}
+  .sw{width:16px;height:16px;border-radius:50%;border:1.5px solid #fff;box-shadow:0 0 0 1px var(--line);}
+  .p-sizes{font-size:12px;color:var(--charcoal-soft);}
+  .p-prices{margin-top:auto;padding-top:10px;border-top:1px dashed var(--line);}
+  .p-cash{font-size:16px;font-weight:700;color:var(--rose-deep);font-family:'Playfair Display',serif;}
+  .p-nasiya{font-size:12.5px;color:var(--charcoal-soft);margin-top:2px;}
+  .p-order-btn{
+    margin-top:12px;width:100%;background:var(--charcoal);color:#fff;
+    border:none;padding:11px;border-radius:10px;font-size:13.5px;font-weight:600;
+    transition:background .2s ease;
+  }
+  .p-order-btn:hover{background:var(--rose-deep);}
+  .load-more{display:flex;justify-content:center;margin-top:40px;}
+
+  /* ---------- Trust strip ---------- */
+  .trust{
+    background:var(--cream-deep);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:34px 24px;
+  }
+  .trust .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .trust-item{display:flex;align-items:center;gap:12px;min-width:220px;flex:1;}
+  .trust-item .num{font-family:'Playfair Display',serif;font-size:22px;color:var(--rose-deep);}
+  .trust-item .lbl{font-size:12.5px;color:var(--charcoal-soft);line-height:1.4;}
+
+  /* ---------- Contact / footer ---------- */
+  .contact{padding:90px 24px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+  .contact-card{
+    background:var(--rose-deep);border-radius:26px;padding:46px;color:#fff;
+  }
+  .contact-card h2{color:#fff;font-size:28px;margin-bottom:14px;}
+  .contact-card p{color:var(--blush);font-size:14.5px;line-height:1.6;margin-bottom:26px;}
+  .contact-links{display:flex;flex-direction:column;gap:14px;}
+  .contact-links a{
+    display:flex;align-items:center;gap:12px;font-size:14.5px;font-weight:500;
+    background:rgba(255,255,255,.08);padding:13px 16px;border-radius:12px;
+    transition:background .2s ease;
+  }
+  .contact-links a:hover{background:rgba(255,255,255,.18);}
+  .map-note{
+    border:1px solid var(--line);border-radius:20px;padding:30px;background:var(--white);
+  }
+  .map-note h3{font-size:19px;margin-bottom:10px;}
+  .map-note p{font-size:14px;color:var(--charcoal-soft);line-height:1.6;margin-bottom:6px;}
+
+  footer.site{
+    background:var(--charcoal);color:#C9BEB8;padding:56px 24px 26px;
+  }
+  .footer-grid{
+    max-width:1200px;margin:0 auto;
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;
+    padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  footer.site h4{color:#fff;font-size:14px;margin-bottom:16px;font-weight:600;}
+  footer.site .logo{color:#fff;margin-bottom:12px;}
+  footer.site .logo span{color:var(--gold);}
+  footer.site p.desc{font-size:13.5px;line-height:1.6;max-width:280px;}
+  footer.site ul li{margin-bottom:10px;font-size:13.5px;}
+  footer.site ul a:hover{color:#fff;}
+  .footer-bottom{
+    max-width:1200px;margin:22px auto 0;font-size:12.5px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#8A7E78;
+  }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(42,33,29,.55);backdrop-filter:blur(3px);
+    display:none;align-items:center;justify-content:center;z-index:100;padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--cream);border-radius:22px;max-width:460px;width:100%;
+    max-height:90vh;overflow-y:auto;padding:32px;position:relative;
+  }
+  .modal-close{
+    position:absolute;top:18px;right:18px;background:var(--blush);border:none;
+    width:32px;height:32px;border-radius:50%;color:var(--rose-deep);font-size:16px;
+  }
+  .modal-product{display:flex;gap:14px;align-items:center;margin-bottom:22px;padding-bottom:20px;border-bottom:1px solid var(--line);}
+  .modal-product .thumb{
+    width:64px;height:76px;border-radius:10px;flex-shrink:0;
+  }
+  .modal-product .mp-brand{font-size:11px;color:var(--gold);font-weight:700;}
+  .modal-product .mp-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--charcoal);}
+  .form-field{margin-bottom:16px;}
+  .form-field label{display:block;font-size:13px;font-weight:600;color:var(--charcoal-soft);margin-bottom:7px;}
+  .form-field input,.form-field select{
+    width:100%;border:1px solid var(--line);background:#fff;padding:12px 14px;
+    border-radius:10px;font-size:14px;font-family:inherit;color:var(--charcoal);
+  }
+  .form-field input:focus,.form-field select:focus{border-color:var(--rose);}
+  .option-row{display:flex;gap:10px;}
+  .option-row .form-field{flex:1;}
+  .pay-toggle{display:flex;gap:10px;}
+  .pay-toggle label{
+    flex:1;border:1.5px solid var(--line);border-radius:12px;padding:12px;
+    text-align:center;font-size:13px;font-weight:600;cursor:pointer;color:var(--charcoal-soft);
+    transition:all .2s ease;
+  }
+  .pay-toggle input{display:none;}
+  .pay-toggle input:checked + span{color:var(--rose-deep);}
+  .pay-toggle label:has(input:checked){border-color:var(--rose-deep);background:var(--blush);}
+  .nasiya-breakdown{
+    background:var(--cream-deep);border-radius:12px;padding:14px;font-size:12.5px;
+    color:var(--charcoal-soft);margin-top:10px;display:none;
+  }
+  .nasiya-breakdown.show{display:block;}
+  .submit-btn{
+    width:100%;background:var(--rose-deep);color:#fff;border:none;
+    padding:15px;border-radius:12px;font-size:14.5px;font-weight:700;margin-top:8px;
+    transition:background .2s ease;
+  }
+  .submit-btn:hover{background:#611f32;}
+  .submit-btn:disabled{opacity:.6;cursor:not-allowed;}
+  .form-note{font-size:11.5px;color:var(--charcoal-soft);text-align:center;margin-top:12px;line-height:1.5;}
+  .success-view{text-align:center;padding:20px 0;}
+  .success-view .check{
+    width:56px;height:56px;border-radius:50%;background:var(--blush);color:var(--rose-deep);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:26px;
+  }
+  .success-view h3{font-size:19px;margin-bottom:8px;}
+  .success-view p{font-size:13.5px;color:var(--charcoal-soft);line-height:1.6;}
+
+  /* ---------- Toast ---------- */
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--charcoal);color:#fff;padding:13px 22px;border-radius:100px;
+    font-size:13.5px;font-weight:500;opacity:0;pointer-events:none;transition:all .3s ease;z-index:200;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:980px){
+    nav.links{display:none;}
+    .tg-quick span{display:none;}
+    .hero{grid-template-columns:1fr;padding-top:40px;}
+    .hero-visual{order:-1;max-width:420px;margin:0 auto;}
+    .cat-grid{grid-template-columns:1fr 1fr;grid-template-rows:150px 150px 150px;}
+    .cat-card.c1{grid-row:span 1;}
+    .product-grid{grid-template-columns:repeat(2,1fr);}
+    .contact{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:520px){
+    .product-grid{grid-template-columns:1fr 1fr;gap:12px;}
+    .p-title{font-size:14px;}
+    .footer-grid{grid-template-columns:1fr;}
+    .trust .wrap{flex-direction:column;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="announce">Toshkent bo'ylab bepul yetkazib berish — 500,000 so'mdan yuqori buyurtmalarga ✦ Nasiya 3/6/12 oy</div>
+
+<header class="site">
+  <div class="nav-row">
+    <a href="#top" class="logo">NAZO<span>RA</span></a>
+    <nav class="links">
+      <a href="#top">Bosh sahifa</a>
+      <a href="#katalog">Katalog</a>
+      <a href="#" data-filter-collection="Yangiliklar" class="collection-link">Yangiliklar</a>
+      <a href="#" data-filter-collection="Chegirmalar" class="collection-link">Chegirmalar</a>
+      <a href="#" data-filter-collection="Bestseller" class="collection-link">Bestseller</a>
+      <a href="#aloqa">Aloqa</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="tg-quick" href="https://t.me/nazora_shop" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21.5 4.5L2.5 12l6.5 2.2M21.5 4.5L15.5 21l-6.5-6.8M21.5 4.5L9 14.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Telegram</span>
+      </a>
+      <button class="icon-btn" aria-label="Sevimlilar">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-10-9.3C.5 8 2.3 4.5 6 4.5c2 0 3.5 1 6 3.4 2.5-2.4 4-3.4 6-3.4 3.7 0 5.5 3.5 4 7.2-2.5 4.7-10 9.3-10 9.3z" stroke="currentColor" stroke-width="1.7"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Savatcha">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6h2l1.5 12h11L20 8H7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="20.5" r="1.2" fill="currentColor"/><circle cx="17" cy="20.5" r="1.2" fill="currentColor"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div>
+    <span class="hero-eyebrow">Kuz-qish 2026 to'plami</span>
+    <h1>Har kuningizga nafosat, har tanlovingizga o'zingiz.</h1>
+    <p class="lead">Kiyim, kosmetika, taqinchoq va aksessuarlar — bir joyda. Naqd yoki nasiya, sizga qulay bo'lgan tarzda buyurtma bering, biz Telegram orqali darhol bog'lanamiz.</p>
+    <div class="hero-ctas">
+      <a href="#katalog" class="btn-primary">Katalogga o'tish</a>
+      <a href="#" class="btn-secondary collection-link" data-filter-collection="Yangiliklar">Yangi to'plam</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="tall">
+      <div class="swatch-float"><strong>127 mahsulot</strong>shu hafta qo'shildi</div>
+    </div>
+    <div class="short"></div>
+    <div class="short two"></div>
+  </div>
+</section>
+
+<section class="categories">
+  <div class="section-head">
+    <h2>To'plamlar bo'yicha xarid qiling</h2>
+    <p>Kiyimdan tortib parvarish vositalarigacha — o'zingizga yoqqan yo'nalishni tanlang.</p>
+  </div>
+  <div class="cat-grid">
+    <a class="cat-card c1 collection-link" href="#katalog" data-filter-category="Kiyim-kechak">
+      <div><h3>Kiyim-kechak</h3><span>Ko'ylaklar, kostyumlar, tashqi kiyim</span></div>
+    </a>
+    <a class="cat-card c2 collection-link" href="#katalog" data-filter-category="Kosmetika va parvarish">
+      <div><h3>Kosmetika</h3><span>Yuz va soch parvarishi</span></div>
+    </a>
+    <a class="cat-card c3 collection-link" href="#katalog" data-filter-category="Taqinchoqlar">
+      <div><h3>Taqinchoqlar</h3><span>Uzuk, sirg'a, bilaguzuk</span></div>
+    </a>
+    <a class="cat-card c4 collection-link" href="#katalog" data-filter-category="Aksessuarlar">
+      <div><h3>Aksessuarlar</h3><span>Sumka, ro'mol, kamar</span></div>
+    </a>
+    <a class="cat-card c5 collection-link" href="#katalog" data-filter-collection="Chegirmalar">
+      <div><h3>Chegirmalar</h3><span>−30% gacha, cheklangan vaqt</span></div>
+    </a>
+  </div>
+  <div class="chip-row" id="quickChips">
+    <button class="chip" data-filter-collection="Yangiliklar">Yangiliklar</button>
+    <button class="chip" data-filter-collection="Chegirmalar">Chegirmalar</button>
+    <button class="chip" data-filter-collection="Bestseller">Bestseller</button>
+    <button class="chip" data-filter-collection="To'plamlar">To'plamlar</button>
+  </div>
+</section>
+
+<section class="catalog" id="katalog">
+  <div class="section-head">
+    <h2>Katalog</h2>
+    <p>O'lcham, rang, narx yoki to'lov turi bo'yicha saralang — sizga mos variantni toping.</p>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label for="fCategory">Kategoriya</label>
+      <select id="fCategory">
+        <option value="">Barchasi</option>
+        <option>Kiyim-kechak</option>
+        <option>Kosmetika va parvarish</option>
+        <option>Taqinchoqlar</option>
+        <option>Aksessuarlar</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="fSize">O'lcham</label>
+      <select id="fSize">
+        <option value="">Barchasi</option>
+        <option>S</option><option>M</option><option>L</option><option>XL</option><option>Standart</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="fPrice">Narx oralig'i</label>
+      <select id="fPrice">
+        <option value="">Barchasi</option>
+        <option value="0-200000">200,000 so'mgacha</option>
+        <option value="200000-500000">200,000 – 500,000</option>
+        <option value="500000-1500000">500,000 – 1,500,000</option>
+        <option value="1500000-99999999">1,500,000 so'mdan yuqori</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="fPay">To'lov turi</label>
+      <select id="fPay">
+        <option value="">Barchasi</option>
+        <option value="naqd">Naqd / karta</option>
+        <option value="nasiya">Nasiya</option>
+      </select>
+    </div>
+    <button class="filter-reset" id="resetFilters">Filtrni tozalash</button>
+  </div>
+
+  <div class="product-grid" id="productGrid"></div>
+  <div class="load-more"><button class="btn-secondary" id="loadMoreBtn">Ko'proq ko'rsatish</button></div>
+</section>
+
+<div class="trust">
+  <div class="wrap">
+    <div class="trust-item"><div class="num">3–12</div><div class="lbl">oylik nasiya muddati, hujjatsiz</div></div>
+    <div class="trust-item"><div class="num">24/7</div><div class="lbl">Telegram orqali tezkor javob</div></div>
+    <div class="trust-item"><div class="num">1–2</div><div class="lbl">kun ichida Toshkentga yetkazib berish</div></div>
+    <div class="trust-item"><div class="num">100%</div><div class="lbl">original mahsulot kafolati</div></div>
+  </div>
+</div>
+
+<section class="contact" id="aloqa">
+  <div class="contact-card">
+    <h2>Savolingiz bormi?</h2>
+    <p>Telegram orqali yozing yoki do'konimizga tashrif buyuring — sizga eng mos o'lcham va to'lov turini tanlashda yordam beramiz.</p>
+    <div class="contact-links">
+      <a href="https://t.me/nazora_shop" target="_blank" rel="noopener">Telegram: @nazora_shop</a>
+      <a href="https://instagram.com/nazora.uz" target="_blank" rel="noopener">Instagram: @nazora.uz</a>
+      <a href="tel:+998901234567">+998 90 123 45 67</a>
+    </div>
+  </div>
+  <div class="map-note">
+    <h3>Do'kon manzili</h3>
+    <p>Toshkent shahri, Yunusobod tumani, Amir Temur ko'chasi, 45-uy</p>
+    <p>Dushanba – Yakshanba: 10:00 – 21:00</p>
+    <p style="margin-top:14px;">Metro: Minor bekati, 5 daqiqa piyoda</p>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="footer-grid">
+    <div>
+      <div class="logo">NAZO<span>RA</span></div>
+      <p class="desc">Ayollar va yosh qizlar uchun kiyim, kosmetika, taqinchoq va aksessuarlar do'koni. Toshkentda ishlab, butun O'zbekiston bo'ylab yetkazib beramiz.</p>
+    </div>
+    <div>
+      <h4>Katalog</h4>
+      <ul>
+        <li><a href="#" class="collection-link" data-filter-category="Kiyim-kechak">Kiyim-kechak</a></li>
+        <li><a href="#" class="collection-link" data-filter-category="Kosmetika va parvarish">Kosmetika</a></li>
+        <li><a href="#" class="collection-link" data-filter-category="Taqinchoqlar">Taqinchoqlar</a></li>
+        <li><a href="#" class="collection-link" data-filter-category="Aksessuarlar">Aksessuarlar</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Mijozlarga</h4>
+      <ul>
+        <li><a href="#">Yetkazib berish shartlari</a></li>
+        <li><a href="#">Nasiya bo'yicha savollar</a></li>
+        <li><a href="#">Qaytarish siyosati</a></li>
+        <li><a href="#aloqa">Aloqa</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Ijtimoiy tarmoqlar</h4>
+      <ul>
+        <li><a href="https://t.me/nazora_shop" target="_blank" rel="noopener">Telegram</a></li>
+        <li><a href="https://instagram.com/nazora.uz" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 NAZORA. Barcha huquqlar himoyalangan.</span>
+    <span>Toshkent, O'zbekiston</span>
+  </div>
+</footer>
+
+<!-- Order Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Yopish">✕</button>
+    <div id="modalFormView">
+      <div class="modal-product">
+        <div class="thumb" id="mpThumb" style="background:var(--blush);border-radius:10px;"></div>
+        <div>
+          <div class="mp-brand" id="mpBrand"></div>
+          <div class="mp-title" id="mpTitle"></div>
+        </div>
+      </div>
+      <h3 id="modalTitle" style="font-size:17px;color:var(--charcoal);margin-bottom:16px;">Buyurtma tafsilotlari</h3>
+      <form id="orderForm">
+        <div class="form-field">
+          <label for="custName">Ismingiz</label>
+          <input type="text" id="custName" placeholder="Ismingizni kiriting" required>
+        </div>
+        <div class="form-field">
+          <label for="custPhone">Telefon raqam</label>
+          <input type="tel" id="custPhone" placeholder="+998 90 123 45 67" required>
+        </div>
+        <div class="option-row">
+          <div class="form-field">
+            <label for="custSize">O'lcham</label>
+            <select id="custSize" required></select>
+          </div>
+          <div class="form-field">
+            <label for="custColor">Rang</label>
+            <select id="custColor" required></select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>To'lov turi</label>
+          <div class="pay-toggle">
+            <label><input type="radio" name="payType" value="naqd" checked><span>Naqd / karta</span></label>
+            <label><input type="radio" name="payType" value="nasiya"><span>Nasiya</span></label>
+          </div>
+          <div class="nasiya-breakdown" id="nasiyaBreakdown"></div>
+        </div>
+        <button type="submit" class="submit-btn" id="submitOrderBtn">Buyurtma berish</button>
+        <p class="form-note">Buyurtma tafsilotlari Telegram bot orqali menejerimizga yuboriladi. Yuborilgach, tez orada siz bilan bog'lanamiz.</p>
+      </form>
+    </div>
+    <div id="modalSuccessView" class="success-view" style="display:none;">
+      <div class="check">✓</div>
+      <h3>Buyurtmangiz qabul qilindi!</h3>
+      <p>Tez orada operatorimiz Telegram yoki telefon orqali siz bilan bog'lanadi. E'tiboringiz uchun rahmat!</p>
+      <button class="btn-secondary" id="modalSuccessClose" style="margin-top:20px;">Yopish</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONFIG — fill these in before deploying to production.
+   ============================================================ */
+const CONFIG = {
+  TELEGRAM_BOT_TOKEN: "YOUR_TELEGRAM_BOT_TOKEN",
+  TELEGRAM_CHAT_ID: "YOUR_TELEGRAM_CHAT_ID",
+  GOOGLE_SHEETS_WEBHOOK_URL: "YOUR_GOOGLE_APPS_SCRIPT_WEBHOOK_URL"
+};
+
+/* ============================================================
+   MOCK PRODUCT DATA MODEL
+   ============================================================ */
+const PRODUCTS = [
+  {
+    id: "p1", title: "Shohi ko'ylak", brand: "Zara",
+    category: "Kiyim-kechak", collections: ["Yangiliklar","Bestseller"],
+    sizes: ["S","M","L"], colors: [{name:"Pushti",hex:"#E7A9BC"},{name:"Bej",hex:"#D8C3A5"},{name:"Fil suyagi",hex:"#F2EDE4"}],
+    cashPrice: 480000, installments: {3:180000,6:98000,12:54000},
+    stock: "Mavjud", desc: "Yumshoq shohi matodan tikilgan, kunlik va bayram tadbirlari uchun mos ko'ylak.",
+    gradient: "linear-gradient(150deg,#E7A9BC,#7A2E43)"
+  },
+  {
+    id: "p2", title: "Trench palto", brand: "Local Brand",
+    category: "Kiyim-kechak", collections: ["Yangiliklar"],
+    sizes: ["M","L","XL"], colors: [{name:"Beige",hex:"#D9C3A0"},{name:"Qora",hex:"#2A211D"}],
+    cashPrice: 890000, installments: {3:330000,6:180000,12:96000},
+    stock: "Oz qoldi", desc: "Kuz mavsumi uchun klassik trench palto, ichki astar bilan.",
+    gradient: "linear-gradient(150deg,#CBB48C,#5C4630)"
+  },
+  {
+    id: "p3", title: "Vitamin C serum", brand: "GlowLab",
+    category: "Kosmetika va parvarish", collections: ["Bestseller"],
+    sizes: ["Standart"], colors: [{name:"—",hex:"#F2EDE4"}],
+    cashPrice: 165000, installments: {3:62000,6:34000,12:19000},
+    stock: "Mavjud", desc: "Terini yorug'lashtiruvchi va nurlantiruvchi vitamin C asosidagi serum, 30ml.",
+    gradient: "linear-gradient(150deg,#F5D9A6,#AD8A56)"
+  },
+  {
+    id: "p4", title: "Marvarid uzuk", brand: "Silver&Co",
+    category: "Taqinchoqlar", collections: ["To'plamlar"],
+    sizes: ["Standart"], colors: [{name:"Kumush",hex:"#D9D9D9"},{name:"Oltin",hex:"#D4AF37"}],
+    cashPrice: 245000, installments: {3:92000,6:50000,12:27000},
+    stock: "Mavjud", desc: "Tabiiy marvarid bilan bezatilgan zamonaviy uzuk, kundalik va bayramona kiyim uchun.",
+    gradient: "linear-gradient(150deg,#E3D6EC,#8F6E9C)"
+  },
+  {
+    id: "p5", title: "Charm sumka", brand: "Local Brand",
+    category: "Aksessuarlar", collections: ["Bestseller","Chegirmalar"],
+    sizes: ["Standart"], colors: [{name:"Qo'ng'ir",hex:"#7A5230"},{name:"Qora",hex:"#2A211D"},{name:"Bej",hex:"#D8C3A5"}],
+    cashPrice: 560000, installments: {3:210000,6:114000,12:60000},
+    stock: "Mavjud", desc: "Haqiqiy charmdan tayyorlangan, keng sig'imli kundalik sumka.", oldPrice: 720000,
+    gradient: "linear-gradient(150deg,#C9A377,#6E5237)"
+  },
+  {
+    id: "p6", title: "Ipak ro'mol", brand: "Zara",
+    category: "Aksessuarlar", collections: ["Yangiliklar"],
+    sizes: ["Standart"], colors: [{name:"Pushti gullar",hex:"#E7A9BC"},{name:"Zumrad",hex:"#4E8B7C"}],
+    cashPrice: 195000, installments: {3:73000,6:40000,12:22000},
+    stock: "Mavjud", desc: "Yengil ipak matodan, gulli naqshli, ko'p variantli bog'lash usullari bilan.",
+    gradient: "linear-gradient(150deg,#B7D8CC,#3E6C5E)"
+  },
+  {
+    id: "p7", title: "Matt lab bo'yog'i to'plami", brand: "GlowLab",
+    category: "Kosmetika va parvarish", collections: ["Chegirmalar","Bestseller"],
+    sizes: ["Standart"], colors: [{name:"—",hex:"#C67B93"}],
+    cashPrice: 128000, installments: {3:48000,6:26000,12:15000},
+    stock: "Mavjud", desc: "5 xil tabiiy rangdagi, uzoq muddat saqlanadigan matt lab bo'yoqlari to'plami.", oldPrice: 170000,
+    gradient: "linear-gradient(150deg,#E3A0B4,#7A2E43)"
+  },
+  {
+    id: "p8", title: "Bilaguzuklar to'plami", brand: "Silver&Co",
+    category: "Taqinchoqlar", collections: ["To'plamlar","Yangiliklar"],
+    sizes: ["Standart"], colors: [{name:"Oltin",hex:"#D4AF37"},{name:"Kumush",hex:"#D9D9D9"}],
+    cashPrice: 175000, installments: {3:66000,6:36000,12:20000},
+    stock: "Buyurtma asosida", desc: "3 dona nozik bilaguzukdan iborat to'plam, kundalik kiyinish uchun.",
+    gradient: "linear-gradient(150deg,#EAD9A0,#AD8A56)"
+  },
+  {
+    id: "p9", title: "Kashmir sviter", brand: "Local Brand",
+    category: "Kiyim-kechak", collections: ["Bestseller"],
+    sizes: ["S","M","L","XL"], colors: [{name:"Pastel yashil",hex:"#B9CDB0"},{name:"Bej",hex:"#D8C3A5"},{name:"Lavanda",hex:"#C9BEDD"}],
+    cashPrice: 610000, installments: {3:228000,6:124000,12:66000},
+    stock: "Mavjud", desc: "Yumshoq kashmir aralashmasidan tayyorlangan, issiq va yengil sviter.",
+    gradient: "linear-gradient(150deg,#C6D6BD,#5C7A52)"
+  },
+  {
+    id: "p10", title: "Quyosh ko'zoynak", brand: "Zara",
+    category: "Aksessuarlar", collections: ["Yangiliklar"],
+    sizes: ["Standart"], colors: [{name:"Qora",hex:"#2A211D"},{name:"Toshbaqa naqsh",hex:"#8A5A2A"}],
+    cashPrice: 210000, installments: {3:79000,6:43000,12:23000},
+    stock: "Mavjud", desc: "UV himoyali, zamonaviy dizaynli quyosh ko'zoynagi.",
+    gradient: "linear-gradient(150deg,#D9C79A,#6E5237)"
+  },
+  {
+    id: "p11", title: "Nam beruvchi krem", brand: "GlowLab",
+    category: "Kosmetika va parvarish", collections: ["Yangiliklar"],
+    sizes: ["Standart"], colors: [{name:"—",hex:"#F2EDE4"}],
+    cashPrice: 142000, installments: {3:53000,6:29000,12:16000},
+    stock: "Oz qoldi", desc: "Gialuron kislotali, barcha teri turlariga mos nam beruvchi krem, 50ml.",
+    gradient: "linear-gradient(150deg,#F0E4D6,#AD8A56)"
+  },
+  {
+    id: "p12", title: "Zargarlik zanjiri (uzun)", brand: "Silver&Co",
+    category: "Taqinchoqlar", collections: ["Chegirmalar"],
+    sizes: ["Standart"], colors: [{name:"Oltin",hex:"#D4AF37"}],
+    cashPrice: 230000, installments: {3:86000,6:47000,12:25000},
+    stock: "Mavjud", desc: "Minimalist uslubdagi uzun zanjir, istalgan liboz bilan mos keladi.", oldPrice: 290000,
+    gradient: "linear-gradient(150deg,#EAD9A0,#8A6A2A)"
+  }
+];
+
+const fmt = n => n.toLocaleString('ru-RU').replace(/,/g,' ') + " so'm";
+
+let state = { category:"", size:"", price:"", pay:"", collection:"", visibleCount: 8 };
+let cart = 0;
+
+function stockClass(s){
+  if(s==="Oz qoldi") return "low";
+  if(s==="Buyurtma asosida") return "order";
+  return "";
+}
+
+function productMatches(p){
+  if(state.category && p.category !== state.category) return false;
+  if(state.size && !p.sizes.includes(state.size)) return false;
+  if(state.collection && !p.collections.includes(state.collection)) return false;
+  if(state.pay === "nasiya" && !p.installments) return false;
+  if(state.price){
+    const [min,max] = state.price.split("-").map(Number);
+    if(p.cashPrice < min || p.cashPrice > max) return false;
+  }
+  return true;
+}
+
+function renderGrid(){
+  const grid = document.getElementById('productGrid');
+  const filtered = PRODUCTS.filter(productMatches);
+  const toShow = filtered.slice(0, state.visibleCount);
+  grid.innerHTML = "";
+  if(toShow.length === 0){
+    grid.innerHTML = `<p style="grid-column:1/-1;color:var(--charcoal-soft);padding:40px 0;text-align:center;">Ushbu filtrlar bo'yicha mahsulot topilmadi. Filtrni tozalab qayta urinib ko'ring.</p>`;
+  }
+  toShow.forEach(p=>{
+    const card = document.createElement('div');
+    card.className = 'p-card';
+    card.innerHTML = `
+      <div class="p-media" style="background:${p.gradient}">
+        <span class="stock-tag ${stockClass(p.stock)}">${p.stock}</span>
+        ${p.title}
+      </div>
+      <div class="p-body">
+        <div class="p-brand">${p.brand}</div>
+        <div class="p-title">${p.title}</div>
+        <div class="p-swatches">${p.colors.map(c=>`<span class="sw" style="background:${c.hex}" title="${c.name}"></span>`).join('')}</div>
+        <div class="p-sizes">O'lcham: ${p.sizes.join(', ')}</div>
+        <div class="p-prices">
+          <div class="p-cash">${fmt(p.cashPrice)}${p.oldPrice ? ` <span style="font-size:12px;color:#B0A39C;text-decoration:line-through;font-family:Inter;font-weight:500;">${fmt(p.oldPrice)}</span>`:''}</div>
+          <div class="p-nasiya">Nasiya: ${fmt(p.installments[12])}dan / oyiga</div>
+        </div>
+        <button class="p-order-btn" data-id="${p.id}">Buyurtma berish</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  document.getElementById('loadMoreBtn').style.display = filtered.length > state.visibleCount ? 'inline-block' : 'none';
+}
+
+document.querySelectorAll('.collection-link').forEach(el=>{
+  el.addEventListener('click', e=>{
+    const coll = el.getAttribute('data-filter-collection');
+    const cat = el.getAttribute('data-filter-category');
+    if(coll){ state.collection = coll; state.category=""; document.getElementById('fCategory').value=""; }
+    if(cat){ state.category = cat; state.collection=""; document.getElementById('fCategory').value = cat; }
+    state.visibleCount = 8;
+    renderGrid();
+  });
+});
+
+['fCategory','fSize','fPrice','fPay'].forEach(id=>{
+  document.getElementById(id).addEventListener('change', e=>{
+    const map = {fCategory:'category', fSize:'size', fPrice:'price', fPay:'pay'};
+    state[map[id]] = e.target.value;
+    state.visibleCount = 8;
+    renderGrid();
+  });
+});
+document.getElementById('resetFilters').addEventListener('click', ()=>{
+  state = { category:"", size:"", price:"", pay:"", collection:"", visibleCount: 8 };
+  document.querySelectorAll('.filter-bar select').forEach(s=>s.value="");
+  renderGrid();
+});
+document.getElementById('loadMoreBtn').addEventListener('click', ()=>{
+  state.visibleCount += 8;
+  renderGrid();
+});
+
+/* ---------------- Order Modal ---------------- */
+const overlay = document.getElementById('modalOverlay');
+let currentProduct = null;
+
+document.getElementById('productGrid').addEventListener('click', e=>{
+  const btn = e.target.closest('.p-order-btn');
+  if(!btn) return;
+  openModal(btn.dataset.id);
+});
+
+function openModal(id){
+  currentProduct = PRODUCTS.find(p=>p.id===id);
+  if(!currentProduct) return;
+  document.getElementById('mpThumb').style.background = currentProduct.gradient;
+  document.getElementById('mpBrand').textContent = currentProduct.brand;
+  document.getElementById('mpTitle').textContent = currentProduct.title;
+
+  const sizeSel = document.getElementById('custSize');
+  sizeSel.innerHTML = currentProduct.sizes.map(s=>`<option value="${s}">${s}</option>`).join('');
+  const colorSel = document.getElementById('custColor');
+  colorSel.innerHTML = currentProduct.colors.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+
+  document.getElementById('orderForm').reset();
+  sizeSel.innerHTML = currentProduct.sizes.map(s=>`<option value="${s}">${s}</option>`).join('');
+  colorSel.innerHTML = currentProduct.colors.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+  document.querySelector('input[name="payType"][value="naqd"]').checked = true;
+  updateNasiyaBreakdown();
+
+  document.getElementById('modalFormView').style.display = 'block';
+  document.getElementById('modalSuccessView').style.display = 'none';
+  overlay.classList.add('open');
+}
+function closeModal(){ overlay.classList.remove('open'); }
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalSuccessClose').addEventListener('click', closeModal);
+overlay.addEventListener('click', e=>{ if(e.target === overlay) closeModal(); });
+
+document.querySelectorAll('input[name="payType"]').forEach(r=>{
+  r.addEventListener('change', updateNasiyaBreakdown);
+});
+function updateNasiyaBreakdown(){
+  const isNasiya = document.querySelector('input[name="payType"]:checked').value === 'nasiya';
+  const box = document.getElementById('nasiyaBreakdown');
+  if(isNasiya && currentProduct){
+    const i = currentProduct.installments;
+    box.innerHTML = `
+      <strong style="color:var(--rose-deep);font-family:'Playfair Display',serif;font-size:13.5px;">Oylik to'lov variantlari</strong><br>
+      3 oy: ${fmt(i[3])} / oyiga &nbsp;•&nbsp; 6 oy: ${fmt(i[6])} / oyiga &nbsp;•&nbsp; 12 oy: ${fmt(i[12])} / oyiga
+    `;
+    box.classList.add('show');
+  } else {
+    box.classList.remove('show');
+  }
+}
+
+/* ---------------- Submit handler: Telegram + Google Sheets ---------------- */
+document.getElementById('orderForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const btn = document.getElementById('submitOrderBtn');
+  btn.disabled = true; btn.textContent = "Yuborilmoqda...";
+
+  const order = {
+    productId: currentProduct.id,
+    productTitle: currentProduct.title,
+    brand: currentProduct.brand,
+    name: document.getElementById('custName').value.trim(),
+    phone: document.getElementById('custPhone').value.trim(),
+    size: document.getElementById('custSize').value,
+    color: document.getElementById('custColor').value,
+    payType: document.querySelector('input[name="payType"]:checked').value,
+    cashPrice: currentProduct.cashPrice,
+    installments: currentProduct.installments,
+    timestamp: new Date().toISOString()
+  };
+
+  const tgMessage = buildTelegramMessage(order);
+  const sheetsPayload = buildSheetsPayload(order);
+
+  try {
+    await sendToTelegram(tgMessage);
+    await sendToGoogleSheets(sheetsPayload);
+  } catch(err){
+    // Network calls will fail in this preview environment since CONFIG
+    // placeholders are not filled in — this is expected until deployed.
+    console.log('Order payload (Telegram):', tgMessage);
+    console.log('Order payload (Sheets):', sheetsPayload);
+  }
+
+  cart += 1;
+  document.getElementById('cartCount').textContent = cart;
+  btn.disabled = false; btn.textContent = "Buyurtma berish";
+  document.getElementById('modalFormView').style.display = 'none';
+  document.getElementById('modalSuccessView').style.display = 'block';
+  showToast("Buyurtmangiz muvaffaqiyatli yuborildi ✦");
+});
+
+function buildTelegramMessage(o){
+  const payLine = o.payType === 'nasiya'
+    ? `Nasiya: 3 oy — ${fmt(o.installments[3])}, 6 oy — ${fmt(o.installments[6])}, 12 oy — ${fmt(o.installments[12])}`
+    : `Naqd/karta: ${fmt(o.cashPrice)}`;
+  return [
+    "🛍 *Yangi buyurtma — NAZORA*",
+    `Mahsulot: ${o.productTitle} (${o.brand})`,
+    `O'lcham: ${o.size} | Rang: ${o.color}`,
+    `To'lov turi: ${payLine}`,
+    `Mijoz: ${o.name}`,
+    `Telefon: ${o.phone}`,
+    `Vaqt: ${new Date(o.timestamp).toLocaleString('uz-UZ')}`
+  ].join('\n');
+}
+function buildSheetsPayload(o){
+  return {
+    sana: o.timestamp,
+    mahsulot: o.productTitle,
+    brend: o.brand,
+    olcham: o.size,
+    rang: o.color,
+    tolov_turi: o.payType,
+    narx: o.payType === 'nasiya' ? o.installments[12] : o.cashPrice,
+    mijoz_ismi: o.name,
+    telefon: o.phone
+  };
+}
+async function sendToTelegram(text){
+  if(CONFIG.TELEGRAM_BOT_TOKEN.startsWith('YOUR_')) throw new Error('Telegram not configured');
+  const url = `https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`;
+  await fetch(url, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ chat_id: CONFIG.TELEGRAM_CHAT_ID, text, parse_mode: 'Markdown' })
+  });
+}
+async function sendToGoogleSheets(payload){
+  if(CONFIG.GOOGLE_SHEETS_WEBHOOK_URL.startsWith('YOUR_')) throw new Error('Sheets not configured');
+  await fetch(CONFIG.GOOGLE_SHEETS_WEBHOOK_URL, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  });
+}
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3200);
+}
+
+renderGrid();
+</script>
+</body>
+</html>
