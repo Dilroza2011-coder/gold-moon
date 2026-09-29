@@ -5,6 +5,6 @@ echo Yangilanmoqda...
 git pull
 echo.
 echo Brauzerda oching: http://localhost:3000  (to'xtatish: Ctrl+C)
-start "" http://localhost:3000
+start "" /b cmd /c "timeout /t 2 /nobreak >nul & start "" http://localhost:3000"
 node server.js
 pause
