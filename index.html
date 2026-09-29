@@ -42,16 +42,6 @@
   .wrap{max-width:1200px;margin:0 auto;padding:0 24px;}
   :focus-visible{outline:2px solid var(--rose-deep);outline-offset:3px;}
 
-  /* ---------- Announcement bar ---------- */
-  .announce{
-    background:var(--rose-deep);
-    color:var(--blush);
-    text-align:center;
-    font-size:13px;
-    padding:9px 16px;
-    letter-spacing:.01em;
-  }
-
   /* ---------- Header ---------- */
   header.site{
     position:sticky;top:0;z-index:50;
@@ -249,7 +239,6 @@
   .p-sizes{font-size:12px;color:var(--charcoal-soft);}
   .p-prices{margin-top:auto;padding-top:10px;border-top:1px dashed var(--line);}
   .p-cash{font-size:16px;font-weight:700;color:var(--rose-deep);font-family:'Playfair Display',serif;}
-  .p-nasiya{font-size:12.5px;color:var(--charcoal-soft);margin-top:2px;}
   .p-order-btn{
     margin-top:12px;width:100%;background:var(--charcoal);color:#fff;
     border:none;padding:11px;border-radius:10px;font-size:13.5px;font-weight:600;
@@ -336,20 +325,12 @@
   .form-field input:focus,.form-field select:focus{border-color:var(--rose);}
   .option-row{display:flex;gap:10px;}
   .option-row .form-field{flex:1;}
-  .pay-toggle{display:flex;gap:10px;}
-  .pay-toggle label{
-    flex:1;border:1.5px solid var(--line);border-radius:12px;padding:12px;
-    text-align:center;font-size:13px;font-weight:600;cursor:pointer;color:var(--charcoal-soft);
-    transition:all .2s ease;
+  .order-total{
+    display:flex;justify-content:space-between;align-items:baseline;
+    background:var(--cream-deep);border-radius:12px;padding:14px 16px;margin-bottom:16px;
+    font-size:13px;color:var(--charcoal-soft);
   }
-  .pay-toggle input{display:none;}
-  .pay-toggle input:checked + span{color:var(--rose-deep);}
-  .pay-toggle label:has(input:checked){border-color:var(--rose-deep);background:var(--blush);}
-  .nasiya-breakdown{
-    background:var(--cream-deep);border-radius:12px;padding:14px;font-size:12.5px;
-    color:var(--charcoal-soft);margin-top:10px;display:none;
-  }
-  .nasiya-breakdown.show{display:block;}
+  .order-total strong{font-family:'Playfair Display',serif;font-size:18px;color:var(--rose-deep);}
   .submit-btn{
     width:100%;background:var(--rose-deep);color:#fff;border:none;
     padding:15px;border-radius:12px;font-size:14.5px;font-weight:700;margin-top:8px;
@@ -399,7 +380,6 @@
 </head>
 <body>
 
-<div class="announce">Toshkent bo'ylab bepul yetkazib berish — 500,000 so'mdan yuqori buyurtmalarga ✦ Nasiya 3/6/12 oy</div>
 
 <header class="site">
   <div class="nav-row">
@@ -432,7 +412,7 @@
   <div>
     <span class="hero-eyebrow">Kuz-qish 2026 to'plami</span>
     <h1>Har kuningizga nafosat, har tanlovingizga o'zingiz.</h1>
-    <p class="lead">Kiyim, kosmetika, taqinchoq va aksessuarlar — bir joyda. Naqd yoki nasiya, sizga qulay bo'lgan tarzda buyurtma bering, biz Telegram orqali darhol bog'lanamiz.</p>
+    <p class="lead">Kiyim, kosmetika, taqinchoq va aksessuarlar — bir joyda. Buyurtma bering, biz Telegram orqali darhol bog'lanamiz.</p>
     <div class="hero-ctas">
       <a href="#katalog" class="btn-primary">Katalogga o'tish</a>
       <a href="#katalog" class="btn-secondary collection-link" data-filter-collection="Yangiliklar">Yangi to'plam</a>
@@ -520,7 +500,6 @@
 
 <div class="trust">
   <div class="wrap">
-    <div class="trust-item"><div class="num">3–12</div><div class="lbl">oylik nasiya muddati, hujjatsiz</div></div>
     <div class="trust-item"><div class="num">24/7</div><div class="lbl">Telegram orqali tezkor javob</div></div>
     <div class="trust-item"><div class="num">1–2</div><div class="lbl">kun ichida Toshkentga yetkazib berish</div></div>
     <div class="trust-item"><div class="num">100%</div><div class="lbl">original mahsulot kafolati</div></div>
@@ -564,7 +543,6 @@
       <h4>Mijozlarga</h4>
       <ul>
         <li><a href="#">Yetkazib berish shartlari</a></li>
-        <li><a href="#">Nasiya bo'yicha savollar</a></li>
         <li><a href="#">Qaytarish siyosati</a></li>
         <li><a href="#aloqa">Aloqa</a></li>
       </ul>
@@ -615,13 +593,9 @@
             <select id="custColor" required></select>
           </div>
         </div>
-        <div class="form-field">
-          <label>To'lov turi</label>
-          <div class="pay-toggle">
-            <label><input type="radio" name="payType" value="naqd" checked><span>Naqd / karta</span></label>
-            <label><input type="radio" name="payType" value="nasiya"><span>Nasiya</span></label>
-          </div>
-          <div class="nasiya-breakdown" id="nasiyaBreakdown"></div>
+        <div class="order-total">
+          <span>Narxi · to'lov naqd</span>
+          <strong id="orderPrice"></strong>
         </div>
         <button type="submit" class="submit-btn" id="submitOrderBtn">Buyurtma berish</button>
         <p class="form-note">Buyurtma tafsilotlari Telegram bot orqali menejerimizga yuboriladi. Yuborilgach, tez orada siz bilan bog'lanamiz.</p>
@@ -665,7 +639,7 @@ function productMatches(p){
   if(state.collection && !p.collections.includes(state.collection)) return false;
   if(state.price){
     const [min,max] = state.price.split("-").map(Number);
-    if(p.cashPrice < min || p.cashPrice > max) return false;
+    if(p.price < min || p.price > max) return false;
   }
   return true;
 }
@@ -693,8 +667,7 @@ function renderGrid(){
         <div class="p-swatches">${p.colors.map(c=>`<span class="sw" style="background:${c.hex}" title="${c.name}"></span>`).join('')}</div>
         <div class="p-sizes">O'lcham: ${p.sizes.join(', ')}</div>
         <div class="p-prices">
-          <div class="p-cash">${fmt(p.cashPrice)}${p.oldPrice ? ` <span style="font-size:12px;color:#B0A39C;text-decoration:line-through;font-family:Inter;font-weight:500;">${fmt(p.oldPrice)}</span>`:''}</div>
-          <div class="p-nasiya">Nasiya: ${fmt(p.installments[12])}dan / oyiga</div>
+          <div class="p-cash">${fmt(p.price)}${p.oldPrice ? ` <span style="font-size:12px;color:#B0A39C;text-decoration:line-through;font-family:Inter;font-weight:500;">${fmt(p.oldPrice)}</span>`:''}</div>
         </div>
         <button class="p-order-btn" data-id="${p.id}">Buyurtma berish</button>
       </div>
@@ -767,8 +740,7 @@ function openModal(id){
   document.getElementById('orderForm').reset();
   sizeSel.innerHTML = currentProduct.sizes.map(s=>`<option value="${s}">${s}</option>`).join('');
   colorSel.innerHTML = currentProduct.colors.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
-  document.querySelector('input[name="payType"][value="naqd"]').checked = true;
-  updateNasiyaBreakdown();
+  document.getElementById('orderPrice').textContent = fmt(currentProduct.price);
 
   document.getElementById('modalFormView').style.display = 'block';
   document.getElementById('modalSuccessView').style.display = 'none';
@@ -778,24 +750,6 @@ function closeModal(){ overlay.classList.remove('open'); }
 document.getElementById('modalClose').addEventListener('click', closeModal);
 document.getElementById('modalSuccessClose').addEventListener('click', closeModal);
 overlay.addEventListener('click', e=>{ if(e.target === overlay) closeModal(); });
-
-document.querySelectorAll('input[name="payType"]').forEach(r=>{
-  r.addEventListener('change', updateNasiyaBreakdown);
-});
-function updateNasiyaBreakdown(){
-  const isNasiya = document.querySelector('input[name="payType"]:checked').value === 'nasiya';
-  const box = document.getElementById('nasiyaBreakdown');
-  if(isNasiya && currentProduct){
-    const i = currentProduct.installments;
-    box.innerHTML = `
-      <strong style="color:var(--rose-deep);font-family:'Playfair Display',serif;font-size:13.5px;">Oylik to'lov variantlari</strong><br>
-      3 oy: ${fmt(i[3])} / oyiga &nbsp;•&nbsp; 6 oy: ${fmt(i[6])} / oyiga &nbsp;•&nbsp; 12 oy: ${fmt(i[12])} / oyiga
-    `;
-    box.classList.add('show');
-  } else {
-    box.classList.remove('show');
-  }
-}
 
 /* ---------------- Submit handler: Telegram + Google Sheets ---------------- */
 document.getElementById('orderForm').addEventListener('submit', async e=>{
@@ -810,8 +764,7 @@ document.getElementById('orderForm').addEventListener('submit', async e=>{
     name: document.getElementById('custName').value.trim(),
     phone: document.getElementById('custPhone').value.trim(),
     size: document.getElementById('custSize').value,
-    color: document.getElementById('custColor').value,
-    payType: document.querySelector('input[name="payType"]:checked').value
+    color: document.getElementById('custColor').value
   };
 
   try {

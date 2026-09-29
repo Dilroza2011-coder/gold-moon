@@ -32,11 +32,10 @@ function validate(body) {
   if (!/^\+?[\d\s()-]{7,20}$/.test(phone)) return { error: "Telefon raqam noto'g'ri" };
   if (!product.sizes.includes(body.size)) return { error: "O'lcham noto'g'ri" };
   if (!product.colors.some(c => c.name === body.color)) return { error: "Rang noto'g'ri" };
-  if (body.payType !== 'naqd' && body.payType !== 'nasiya') return { error: "To'lov turi noto'g'ri" };
   return {
     order: {
       product, name, phone,
-      size: body.size, color: body.color, payType: body.payType,
+      size: body.size, color: body.color,
       timestamp: new Date().toISOString(),
     },
   };
@@ -44,15 +43,12 @@ function validate(body) {
 
 // HTML parse mode + escaping: customer text can't break the message format.
 function telegramText(o) {
-  const p = o.product, i = p.installments;
-  const payLine = o.payType === 'nasiya'
-    ? `Nasiya: 3 oy — ${fmt(i[3])}, 6 oy — ${fmt(i[6])}, 12 oy — ${fmt(i[12])}`
-    : `Naqd/karta: ${fmt(p.cashPrice)}`;
+  const p = o.product;
   return [
     '🛍 <b>Yangi buyurtma — Gold MooN</b>',
     `Mahsulot: ${escapeHtml(p.title)} (${escapeHtml(p.brand)})`,
     `O'lcham: ${escapeHtml(o.size)} | Rang: ${escapeHtml(o.color)}`,
-    `To'lov turi: ${payLine}`,
+    `Narxi: ${fmt(p.price)} (naqd)`,
     `Mijoz: ${escapeHtml(o.name)}`,
     `Telefon: ${escapeHtml(o.phone)}`,
     `Vaqt: ${new Date(o.timestamp).toLocaleString('ru-RU', { timeZone: 'Asia/Tashkent' })}`,
@@ -67,8 +63,7 @@ function sheetsRow(o) {
     brend: p.brand,
     olcham: o.size,
     rang: o.color,
-    tolov_turi: o.payType,
-    narx: o.payType === 'nasiya' ? p.installments[12] : p.cashPrice,
+    narx: p.price,
     mijoz_ismi: o.name,
     telefon: o.phone,
   };
