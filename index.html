@@ -142,17 +142,18 @@
   }
   .hero-visual .tall{
     grid-row:span 2;border-radius:26px 26px 26px 4px;
-    background:linear-gradient(160deg,var(--blush),var(--rose) 130%);
+    /* Photo from images/; if the file is missing the gradient shows. */
+    background:center/cover no-repeat url("images/hero-1.jpg"),linear-gradient(160deg,var(--blush),var(--rose) 130%);
     aspect-ratio:3/4.4;position:relative;overflow:hidden;
   }
   .hero-visual .short{
     border-radius:26px 4px 26px 26px;
-    background:linear-gradient(150deg,var(--cream-deep),var(--gold) 160%);
+    background:center/cover no-repeat url("images/hero-2.jpg"),linear-gradient(150deg,var(--cream-deep),var(--gold) 160%);
     aspect-ratio:1/1;
   }
   .hero-visual .short.two{
     border-radius:4px 26px 26px 26px;
-    background:linear-gradient(200deg,#fff,var(--blush) 140%);
+    background:center/cover no-repeat url("images/hero-3.jpg"),linear-gradient(200deg,#fff,var(--blush) 140%);
     border:1px solid var(--line);
   }
   .swatch-float{
