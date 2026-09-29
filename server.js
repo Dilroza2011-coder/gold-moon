@@ -1,4 +1,4 @@
-// NAZORA — static site + order endpoint. No dependencies (Node 18+).
+// Gold MooN — static site + order endpoint. No dependencies (Node 18+).
 //
 // Secrets live only here, read from environment variables:
 //   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, GOOGLE_SHEETS_WEBHOOK_URL
@@ -49,7 +49,7 @@ function telegramText(o) {
     ? `Nasiya: 3 oy — ${fmt(i[3])}, 6 oy — ${fmt(i[6])}, 12 oy — ${fmt(i[12])}`
     : `Naqd/karta: ${fmt(p.cashPrice)}`;
   return [
-    '🛍 <b>Yangi buyurtma — NAZORA</b>',
+    '🛍 <b>Yangi buyurtma — Gold MooN</b>',
     `Mahsulot: ${escapeHtml(p.title)} (${escapeHtml(p.brand)})`,
     `O'lcham: ${escapeHtml(o.size)} | Rang: ${escapeHtml(o.color)}`,
     `To'lov turi: ${payLine}`,
@@ -136,5 +136,5 @@ http.createServer((req, res) => {
     send(res, 200, data, file[1]);
   });
 }).listen(PORT, () => {
-  console.log(`NAZORA: http://localhost:${PORT}${DEMO ? '  (DEMO rejim — Telegram sozlanmagan)' : ''}`);
+  console.log(`Gold MooN: http://localhost:${PORT}${DEMO ? '  (DEMO rejim — Telegram sozlanmagan)' : ''}`);
 });

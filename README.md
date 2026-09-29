@@ -1,4 +1,4 @@
-# NAZORA
+# Gold MooN
 
 Ayollar uchun moda va go'zallik do'koni sahifasi.
 
