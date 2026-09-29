@@ -97,6 +97,15 @@ const PRODUCTS = [
     cashPrice: 230000, installments: {3:86000,6:47000,12:25000},
     stock: "Mavjud", desc: "Minimalist uslubdagi uzun zanjir, istalgan liboz bilan mos keladi.", oldPrice: 290000,
     gradient: "linear-gradient(150deg,#EAD9A0,#8A6A2A)"
+  },
+  {
+    id: "p13", title: "Omad kulonli marjon", brand: "Accessorize x Good Manners",
+    category: "Taqinchoqlar", collections: ["Yangiliklar"],
+    sizes: ["Standart"], colors: [{name:"Oltin",hex:"#D4AF37"}],
+    cashPrice: 655450, installments: {3:246000,6:134000,12:74000},
+    stock: "Mavjud", desc: "Zanglamaydigan po'latdan, katta bo'g'inli zanjir. To'rt bargli beda va taqa shaklidagi kulon shisha toshlar bilan bezatilgan. Suv o'tkazmaydigan PVD qoplamasi tufayli dushda, suzishda va sport paytida ham taqib yursa bo'ladi.",
+    image: "images/lucky-charm-necklace.jpg",
+    gradient: "linear-gradient(150deg,#F0DDA0,#B08A3A)"
   }
 ];
 

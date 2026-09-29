@@ -129,6 +129,16 @@ http.createServer((req, res) => {
     return;
   }
 
+  // Product photos: /images/<name>.jpg|jpeg|png|webp (no subfolders).
+  const img = req.method === 'GET' && url.pathname.match(/^\/images\/([\w-]+\.(jpe?g|png|webp))$/i);
+  if (img) {
+    const type = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' }[img[2].toLowerCase()];
+    return fs.readFile(path.join(__dirname, 'images', img[1]), (err, data) => {
+      if (err) return send(res, 404, 'Not found', 'text/plain; charset=utf-8');
+      send(res, 200, data, type);
+    });
+  }
+
   const file = req.method === 'GET' && STATIC[url.pathname];
   if (!file) return send(res, 404, 'Not found', 'text/plain; charset=utf-8');
   fs.readFile(path.join(__dirname, file[0]), (err, data) => {
