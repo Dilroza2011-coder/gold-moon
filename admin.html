@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Gold MooN — Admin panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF7F4;
+    --cream-deep:#F4EDE7;
+    --blush:#F1DEE3;
+    --rose:#C67B93;
+    --rose-deep:#7A2E43;
+    --gold:#AD8A56;
+    --charcoal:#2A211D;
+    --charcoal-soft:#5C4F49;
+    --line:#E5D9D1;
+    --white:#FFFFFF;
+    --danger:#B3261E;
+    --ok:#2E7D4F;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--cream);color:var(--charcoal);font-family:'Inter',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;}
+  h1,h2,.serif{font-family:'Playfair Display',serif;font-weight:600;margin:0;color:var(--rose-deep);}
+  button{font-family:inherit;cursor:pointer;}
+  input,select,textarea{font-family:inherit;font-size:14px;color:var(--charcoal);}
+  :focus-visible{outline:2px solid var(--rose-deep);outline-offset:2px;}
+  [hidden]{display:none !important;}
+
+  .btn{border:none;border-radius:10px;padding:10px 16px;font-weight:600;font-size:13.5px;}
+  .btn-primary{background:var(--rose-deep);color:#fff;}
+  .btn-primary:hover{background:#611f32;}
+  .btn-primary:disabled{opacity:.6;cursor:not-allowed;}
+  .btn-ghost{background:var(--white);color:var(--rose-deep);border:1px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--rose);}
+  .btn-danger{background:transparent;color:var(--danger);border:1px solid #EBCBC8;}
+  .btn-danger:hover{background:#FBEDEC;}
+  .btn-sm{padding:7px 12px;font-size:12.5px;border-radius:8px;}
+
+  /* ---------- Login ---------- */
+  .login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px 16px;}
+  .login-card{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:36px 32px;width:100%;max-width:380px;}
+  .logo{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--rose-deep);}
+  .logo span{color:var(--gold);}
+  .login-card p{color:var(--charcoal-soft);margin:6px 0 22px;}
+
+  /* ---------- Layout ---------- */
+  header.bar{
+    position:sticky;top:0;z-index:20;background:rgba(251,247,244,.95);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar-inner{max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .bar-inner .tag{font-size:12px;font-weight:600;color:var(--charcoal-soft);background:var(--blush);padding:4px 10px;border-radius:100px;}
+  .bar-inner .spacer{flex:1;}
+  .bar-inner a{color:var(--rose-deep);font-weight:600;text-decoration:none;font-size:13.5px;}
+  main{max-width:1200px;margin:0 auto;padding:28px 24px 80px;}
+  .toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px;}
+  .toolbar h1{font-size:26px;margin-right:auto;}
+  .toolbar input[type=search]{border:1px solid var(--line);background:var(--white);border-radius:10px;padding:10px 14px;min-width:0;width:240px;max-width:100%;}
+  .count{color:var(--charcoal-soft);font-size:13px;margin-bottom:12px;}
+
+  /* ---------- Product list ---------- */
+  .list{display:flex;flex-direction:column;gap:10px;}
+  .row{
+    display:grid;grid-template-columns:64px minmax(0,1fr) 190px 130px auto;gap:16px;align-items:center;
+    background:var(--white);border:1px solid var(--line);border-radius:14px;padding:12px 14px;
+  }
+  .thumb{width:64px;height:76px;border-radius:10px;background-size:cover;background-position:center;}
+  .row .name{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;line-height:1.25;overflow-wrap:anywhere;}
+  .row .meta{font-size:12.5px;color:var(--charcoal-soft);margin-top:3px;}
+  .row .meta b{color:var(--gold);font-weight:600;}
+  .price-edit{display:flex;gap:6px;align-items:center;}
+  .price-edit input{width:100%;min-width:0;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-variant-numeric:tabular-nums;background:var(--cream);}
+  .price-edit input.changed{border-color:var(--rose-deep);background:#fff;}
+  .price-label{font-size:11px;color:var(--charcoal-soft);margin-bottom:4px;}
+  .stock{font-size:12px;font-weight:600;padding:5px 10px;border-radius:100px;justify-self:start;}
+  .stock.s0{background:#E7F3EC;color:var(--ok);}
+  .stock.s1{background:#FBF0E3;color:#9A5A1A;}
+  .stock.s2{background:var(--blush);color:var(--rose-deep);}
+  .actions{display:flex;gap:8px;}
+  .empty{background:var(--white);border:1px dashed var(--line);border-radius:14px;padding:40px;text-align:center;color:var(--charcoal-soft);}
+
+  /* ---------- Editor drawer ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(42,33,29,.45);z-index:40;}
+  .drawer{
+    position:fixed;top:0;right:0;bottom:0;z-index:50;width:min(560px,100%);
+    background:var(--cream);box-shadow:-20px 0 50px rgba(42,33,29,.15);
+    display:flex;flex-direction:column;
+  }
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--line);}
+  .drawer-head h2{font-size:20px;}
+  .drawer-body{flex:1;overflow-y:auto;padding:22px 24px;display:flex;flex-direction:column;gap:18px;}
+  .drawer-foot{padding:14px 24px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;background:var(--white);}
+  .close-x{background:var(--blush);border:none;width:34px;height:34px;border-radius:50%;color:var(--rose-deep);font-size:15px;}
+
+  .field label,.field .label{display:block;font-size:12.5px;font-weight:600;color:var(--charcoal-soft);margin-bottom:6px;}
+  .field .hint{font-size:11.5px;color:var(--charcoal-soft);margin-top:5px;}
+  .field input[type=text],.field input[type=number],.field select,.field textarea,.login-card input{
+    width:100%;border:1px solid var(--line);background:#fff;border-radius:10px;padding:11px 13px;
+  }
+  .field textarea{min-height:90px;resize:vertical;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .checks{display:flex;flex-wrap:wrap;gap:8px;}
+  .checks label{
+    display:flex;align-items:center;gap:6px;margin:0;border:1px solid var(--line);background:#fff;
+    padding:8px 12px;border-radius:100px;font-weight:500;color:var(--charcoal);cursor:pointer;font-size:13px;
+  }
+  .checks label:has(input:checked){border-color:var(--rose-deep);background:var(--blush);color:var(--rose-deep);}
+  .checks input{accent-color:var(--rose-deep);margin:0;}
+
+  .photo{display:flex;gap:16px;align-items:center;}
+  .photo-preview{
+    width:120px;height:144px;border-radius:14px;flex-shrink:0;border:1px solid var(--line);
+    background:var(--cream-deep) center/cover no-repeat;display:grid;place-items:center;
+    color:var(--charcoal-soft);font-size:12px;text-align:center;padding:8px;
+  }
+  .photo-actions{display:flex;flex-direction:column;gap:8px;align-items:flex-start;}
+  .photo-actions .hint{margin:0;}
+
+  .color-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
+  .color-row input[type=color]{width:42px;height:40px;border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff;flex-shrink:0;}
+  .color-row input[type=text]{flex:1;min-width:0;}
+  .color-row button{flex-shrink:0;}
+
+  .form-error{background:#FBEDEC;color:var(--danger);border-radius:10px;padding:10px 14px;font-size:13px;}
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--charcoal);color:#fff;padding:12px 20px;border-radius:100px;
+    font-size:13.5px;opacity:0;pointer-events:none;transition:all .25s ease;z-index:100;max-width:calc(100% - 32px);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .toast.err{background:var(--danger);}
+
+  @media (max-width:860px){
+    .row{grid-template-columns:64px minmax(0,1fr);}
+    .row .price-box,.row .stock,.row .actions{grid-column:2;}
+    .actions{flex-wrap:wrap;}
+  }
+  @media (max-width:520px){
+    .bar-inner,main{padding-left:16px;padding-right:16px;}
+    .drawer-body,.drawer-head,.drawer-foot{padding-left:16px;padding-right:16px;}
+    .two{grid-template-columns:1fr;}
+    .toolbar input[type=search]{width:100%;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div class="login-wrap" id="loginView" hidden>
+  <form class="login-card" id="loginForm">
+    <div class="logo">Gold <span>MooN</span></div>
+    <p>Admin panelga kirish</p>
+    <div class="field">
+      <label for="password">Parol</label>
+      <input type="password" id="password" autocomplete="current-password" required>
+      <div class="hint">Parol server oynasida va <code>data\admin-password.txt</code> faylida yozilgan.</div>
+    </div>
+    <div class="form-error" id="loginError" hidden style="margin-top:14px;"></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:18px;padding:13px;" id="loginBtn">Kirish</button>
+  </form>
+</div>
+
+<!-- App -->
+<div id="appView" hidden>
+  <header class="bar">
+    <div class="bar-inner">
+      <div class="logo">Gold <span>MooN</span></div>
+      <span class="tag">Admin panel</span>
+      <span class="spacer"></span>
+      <a href="/" target="_blank" rel="noopener">Saytni ochish ↗</a>
+      <button class="btn btn-ghost btn-sm" id="logoutBtn">Chiqish</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <h1>Mahsulotlar</h1>
+      <input type="search" id="search" placeholder="Nomi yoki brendi bo'yicha qidirish" aria-label="Qidirish">
+      <button class="btn btn-primary" id="addBtn">+ Yangi mahsulot</button>
+    </div>
+    <div class="count" id="count"></div>
+    <div class="list" id="list"></div>
+  </main>
+</div>
+
+<!-- Editor -->
+<div class="overlay" id="overlay" hidden></div>
+<aside class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <div class="drawer-head">
+    <h2 id="drawerTitle">Yangi mahsulot</h2>
+    <button class="close-x" id="closeDrawer" aria-label="Yopish">✕</button>
+  </div>
+  <form class="drawer-body" id="editForm" novalidate>
+    <div class="field">
+      <span class="label">Rasm</span>
+      <div class="photo">
+        <div class="photo-preview" id="photoPreview">Rasm yo'q</div>
+        <div class="photo-actions">
+          <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp" hidden>
+          <button type="button" class="btn btn-ghost btn-sm" id="photoPick">Rasm tanlash</button>
+          <button type="button" class="btn btn-danger btn-sm" id="photoRemove" hidden>Rasmni olib tashlash</button>
+          <p class="hint">JPG, PNG yoki WEBP, 8 MB gacha. Tik (3:4) rasm eng chiroyli chiqadi.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="fTitle">Nomi *</label>
+      <input type="text" id="fTitle" maxlength="120" placeholder="Masalan: Omad kulonli marjon">
+    </div>
+    <div class="two">
+      <div class="field">
+        <label for="fBrand">Brend</label>
+        <input type="text" id="fBrand" maxlength="80">
+      </div>
+      <div class="field">
+        <label for="fCategory">Kategoriya *</label>
+        <select id="fCategory"></select>
+      </div>
+    </div>
+    <div class="two">
+      <div class="field">
+        <label for="fPrice">Narxi, so'm *</label>
+        <input type="number" id="fPrice" min="1" step="1" inputmode="numeric" placeholder="250000">
+      </div>
+      <div class="field">
+        <label for="fOldPrice">Eski narxi, so'm</label>
+        <input type="number" id="fOldPrice" min="1" step="1" inputmode="numeric">
+        <div class="hint">Chegirma bo'lsa to'ldiring: saytda ustidan chizilgan holda ko'rinadi.</div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="fStock">Mavjudligi</label>
+      <select id="fStock"></select>
+    </div>
+    <div class="field">
+      <span class="label">To'plamlar</span>
+      <div class="checks" id="fCollections"></div>
+    </div>
+    <div class="field">
+      <label for="fSizes">O'lchamlar</label>
+      <input type="text" id="fSizes" placeholder="S, M, L, XL">
+      <div class="hint">Vergul bilan ajrating. Bo'sh qoldirsangiz "Standart" bo'ladi.</div>
+    </div>
+    <div class="field">
+      <span class="label">Ranglar *</span>
+      <div id="fColors"></div>
+      <button type="button" class="btn btn-ghost btn-sm" id="addColor">+ Rang qo'shish</button>
+    </div>
+    <div class="field">
+      <label for="fDesc">Tavsif</label>
+      <textarea id="fDesc" maxlength="2000"></textarea>
+    </div>
+    <div class="form-error" id="formError" hidden></div>
+  </form>
+  <div class="drawer-foot">
+    <button type="button" class="btn btn-ghost" id="cancelBtn">Bekor qilish</button>
+    <button type="submit" form="editForm" class="btn btn-primary" id="saveBtn">Saqlash</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => Number(n).toLocaleString('ru-RU').replace(/ /g,' ') + " so'm";
+
+let META = null;       // categories / collections / stock options from the server
+let products = [];
+let editing = null;    // product being edited, or null for a new one
+let image = '';        // current image path in the editor
+
+function toast(msg, isErr){
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.toggle('err', !!isErr);
+  t.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+async function api(method, url, body, headers){
+  const res = await fetch(url, {
+    method,
+    headers: headers || (body !== undefined ? {'Content-Type':'application/json'} : {}),
+    body: body === undefined ? undefined : (headers ? body : JSON.stringify(body)),
+  });
+  const data = await res.json().catch(()=>({}));
+  if(res.status === 401 && url !== '/api/admin/login'){ showLogin(); throw new Error('Qayta kiring'); }
+  if(!res.ok) throw new Error(data.error || 'Xatolik yuz berdi');
+  return data;
+}
+
+/* ---------------- Login ---------------- */
+function showLogin(){ $('appView').hidden = true; $('loginView').hidden = false; $('password').focus(); }
+
+$('loginForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  $('loginError').hidden = true;
+  $('loginBtn').disabled = true;
+  try {
+    await api('POST', '/api/admin/login', { password: $('password').value });
+    $('password').value = '';
+    await start();
+  } catch(err){
+    $('loginError').textContent = err.message;
+    $('loginError').hidden = false;
+  } finally { $('loginBtn').disabled = false; }
+});
+
+$('logoutBtn').addEventListener('click', async ()=>{
+  await api('POST', '/api/admin/logout').catch(()=>{});
+  showLogin();
+});
+
+async function start(){
+  META = await api('GET', '/api/admin/me');
+  $('fCategory').innerHTML = META.categories.map(c=>`<option>${esc(c)}</option>`).join('');
+  $('fStock').innerHTML = META.stock.map(s=>`<option>${esc(s)}</option>`).join('');
+  $('fCollections').innerHTML = META.collections.map(c=>
+    `<label><input type="checkbox" value="${esc(c)}">${esc(c)}</label>`).join('');
+  await loadProducts();
+  $('loginView').hidden = true;
+  $('appView').hidden = false;
+}
+
+/* ---------------- List ---------------- */
+async function loadProducts(){
+  products = await api('GET', '/api/products');
+  renderList();
+}
+
+function renderList(){
+  const q = $('search').value.trim().toLowerCase();
+  const shown = products.filter(p => !q || (p.title + ' ' + p.brand).toLowerCase().includes(q));
+  $('count').textContent = q ? `${shown.length} ta topildi (jami ${products.length})` : `Jami ${products.length} ta mahsulot`;
+  if(!shown.length){
+    $('list').innerHTML = `<div class="empty">${q ? "Hech narsa topilmadi." : "Hali mahsulot yo'q. \"Yangi mahsulot\" tugmasini bosing."}</div>`;
+    return;
+  }
+  $('list').innerHTML = shown.map(p=>{
+    const bg = p.image ? `url('${esc(p.image)}') center/cover, ${p.gradient}` : p.gradient;
+    const s = META.stock.indexOf(p.stock);
+    return `
+    <div class="row" data-id="${esc(p.id)}">
+      <div class="thumb" style="background:${bg}"></div>
+      <div>
+        <div class="name">${esc(p.title)}</div>
+        <div class="meta"><b>${esc(p.brand || '—')}</b> · ${esc(p.category)}${p.collections.length ? ' · ' + esc(p.collections.join(', ')) : ''}</div>
+      </div>
+      <div class="price-box">
+        <div class="price-label">Narxi, so'm</div>
+        <div class="price-edit">
+          <input type="number" min="1" step="1" value="${p.price}" data-price aria-label="${esc(p.title)} narxi">
+          <button class="btn btn-primary btn-sm" data-save-price hidden>OK</button>
+        </div>
+      </div>
+      <span class="stock s${s < 0 ? 0 : s}">${esc(p.stock)}</span>
+      <div class="actions">
+        <button class="btn btn-ghost btn-sm" data-edit>Tahrirlash</button>
+        <button class="btn btn-danger btn-sm" data-delete>O'chirish</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+$('search').addEventListener('input', renderList);
+
+// Quick price edit right in the list.
+$('list').addEventListener('input', e=>{
+  if(!e.target.matches('[data-price]')) return;
+  const row = e.target.closest('.row');
+  const p = products.find(x=>x.id===row.dataset.id);
+  const changed = Number(e.target.value) !== p.price;
+  e.target.classList.toggle('changed', changed);
+  row.querySelector('[data-save-price]').hidden = !changed;
+});
+$('list').addEventListener('keydown', e=>{
+  if(e.key === 'Enter' && e.target.matches('[data-price]')) e.target.closest('.row').querySelector('[data-save-price]').click();
+});
+
+$('list').addEventListener('click', async e=>{
+  const row = e.target.closest('.row');
+  if(!row) return;
+  const p = products.find(x=>x.id===row.dataset.id);
+
+  if(e.target.matches('[data-edit]')) openEditor(p);
+
+  if(e.target.matches('[data-save-price]')){
+    const price = Number(row.querySelector('[data-price]').value);
+    try {
+      await api('PUT', `/api/admin/products/${p.id}`, { ...p, price });
+      await loadProducts();
+      toast('Narx saqlandi');
+    } catch(err){ toast(err.message, true); }
+  }
+
+  if(e.target.matches('[data-delete]')){
+    if(!confirm(`"${p.title}" o'chirilsinmi? Buni qaytarib bo'lmaydi.`)) return;
+    try {
+      await api('DELETE', `/api/admin/products/${p.id}`);
+      await loadProducts();
+      toast("Mahsulot o'chirildi");
+    } catch(err){ toast(err.message, true); }
+  }
+});
+
+/* ---------------- Editor ---------------- */
+function colorRow(c){
+  const div = document.createElement('div');
+  div.className = 'color-row';
+  div.innerHTML = `
+    <input type="color" value="${esc(c.hex)}" aria-label="Rang">
+    <input type="text" value="${esc(c.name)}" maxlength="40" placeholder="Rang nomi, masalan: Oltin" aria-label="Rang nomi">
+    <button type="button" class="btn btn-danger btn-sm" aria-label="Rangni olib tashlash">✕</button>`;
+  div.querySelector('button').addEventListener('click', ()=>div.remove());
+  $('fColors').appendChild(div);
+}
+$('addColor').addEventListener('click', ()=>colorRow({hex:'#D4AF37', name:''}));
+
+function setImage(path){
+  image = path || '';
+  const box = $('photoPreview');
+  box.style.backgroundImage = image ? `url('${image}')` : '';
+  box.textContent = image ? '' : "Rasm yo'q";
+  $('photoRemove').hidden = !image;
+  $('photoPick').textContent = image ? 'Rasmni almashtirish' : 'Rasm tanlash';
+}
+
+function openEditor(p){
+  editing = p || null;
+  $('drawerTitle').textContent = p ? 'Mahsulotni tahrirlash' : 'Yangi mahsulot';
+  $('formError').hidden = true;
+  $('fTitle').value = p ? p.title : '';
+  $('fBrand').value = p ? p.brand : '';
+  $('fCategory').value = p ? p.category : META.categories[0];
+  $('fPrice').value = p ? p.price : '';
+  $('fOldPrice').value = p && p.oldPrice ? p.oldPrice : '';
+  $('fStock').value = p ? p.stock : META.stock[0];
+  $('fSizes').value = p ? p.sizes.join(', ') : '';
+  $('fDesc').value = p ? (p.desc || '') : '';
+  $('fCollections').querySelectorAll('input').forEach(i => i.checked = !!p && p.collections.includes(i.value));
+  $('fColors').innerHTML = '';
+  (p ? p.colors : [{hex:'#D4AF37', name:''}]).forEach(colorRow);
+  setImage(p ? p.image : '');
+  $('overlay').hidden = false;
+  $('drawer').hidden = false;
+  $('fTitle').focus();
+}
+function closeEditor(){ $('overlay').hidden = true; $('drawer').hidden = true; }
+$('addBtn').addEventListener('click', ()=>openEditor(null));
+$('closeDrawer').addEventListener('click', closeEditor);
+$('cancelBtn').addEventListener('click', closeEditor);
+$('overlay').addEventListener('click', closeEditor);
+document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && !$('drawer').hidden) closeEditor(); });
+
+$('photoPick').addEventListener('click', ()=>$('photoInput').click());
+$('photoRemove').addEventListener('click', ()=>setImage(''));
+$('photoInput').addEventListener('change', async ()=>{
+  const file = $('photoInput').files[0];
+  $('photoInput').value = '';
+  if(!file) return;
+  if(file.size > 8 * 1024 * 1024){ toast('Rasm 8 MB dan katta', true); return; }
+  $('photoPick').disabled = true;
+  $('photoPreview').textContent = 'Yuklanmoqda...';
+  try {
+    const data = await api('POST', '/api/admin/upload', file, {'Content-Type': file.type});
+    setImage(data.image);
+  } catch(err){
+    setImage(image);
+    toast(err.message, true);
+  } finally { $('photoPick').disabled = false; }
+});
+
+$('editForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const payload = {
+    title: $('fTitle').value,
+    brand: $('fBrand').value,
+    category: $('fCategory').value,
+    price: Number($('fPrice').value),
+    oldPrice: $('fOldPrice').value ? Number($('fOldPrice').value) : null,
+    stock: $('fStock').value,
+    collections: [...$('fCollections').querySelectorAll('input:checked')].map(i=>i.value),
+    sizes: $('fSizes').value.split(',').map(s=>s.trim()).filter(Boolean),
+    colors: [...$('fColors').querySelectorAll('.color-row')].map(r=>({
+      hex: r.querySelector('input[type=color]').value,
+      name: r.querySelector('input[type=text]').value.trim(),
+    })).filter(c=>c.name),
+    desc: $('fDesc').value,
+    image,
+  };
+  $('saveBtn').disabled = true;
+  $('formError').hidden = true;
+  try {
+    if(editing) await api('PUT', `/api/admin/products/${editing.id}`, payload);
+    else await api('POST', '/api/admin/products', payload);
+    closeEditor();
+    await loadProducts();
+    toast(editing ? 'Saqlandi' : "Mahsulot qo'shildi");
+  } catch(err){
+    $('formError').textContent = err.message;
+    $('formError').hidden = false;
+  } finally { $('saveBtn').disabled = false; }
+});
+
+/* ---------------- Boot ---------------- */
+start().catch(showLogin);
+</script>
+</body>
+</html>

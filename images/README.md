@@ -1,7 +1,8 @@
 # Mahsulot rasmlari
 
-Rasmni shu papkaga qo'ying va `products.js` dagi mahsulotning `image` maydoniga
-nomini yozing, masalan `image: "images/lucky-charm-necklace.jpg"`.
+Mahsulot rasmlarini admin paneldan (`/admin`) yuklash qulayroq: ular
+`data/uploads/` papkasiga saqlanadi. Bu papka esa bosh sahifa rasmlari va
+qo'lda qo'yiladigan rasmlar uchun.
 
 - Formatlar: `.jpg`, `.jpeg`, `.png`, `.webp`
 - Nomda faqat lotin harflari, raqamlar, `-` va `_` bo'lsin (bo'sh joysiz).

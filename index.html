@@ -612,7 +612,6 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="products.js"></script>
 <script>
 /* ============================================================
    Orders are POSTed to the local server (server.js), which holds
@@ -620,6 +619,10 @@
    ============================================================ */
 const ORDER_ENDPOINT = "/api/order";
 
+
+// Catalog is loaded from the server (managed in the admin panel).
+let PRODUCTS = [];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 const fmt = n => n.toLocaleString('ru-RU').replace(/,/g,' ') + " so'm";
 
@@ -657,19 +660,19 @@ function renderGrid(){
     card.className = 'p-card';
     card.innerHTML = `
       <div class="p-media" style="background:${p.gradient}">
-        ${p.image ? `<img src="${p.image}" alt="${p.title}" loading="lazy" onerror="this.remove()">` : ''}
-        <span class="stock-tag ${stockClass(p.stock)}">${p.stock}</span>
-        ${p.title}
+        ${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy" onerror="this.remove()">` : ''}
+        <span class="stock-tag ${stockClass(p.stock)}">${esc(p.stock)}</span>
+        ${esc(p.title)}
       </div>
       <div class="p-body">
-        <div class="p-brand">${p.brand}</div>
-        <div class="p-title">${p.title}</div>
-        <div class="p-swatches">${p.colors.map(c=>`<span class="sw" style="background:${c.hex}" title="${c.name}"></span>`).join('')}</div>
-        <div class="p-sizes">O'lcham: ${p.sizes.join(', ')}</div>
+        <div class="p-brand">${esc(p.brand)}</div>
+        <div class="p-title">${esc(p.title)}</div>
+        <div class="p-swatches">${p.colors.map(c=>`<span class="sw" style="background:${c.hex}" title="${esc(c.name)}"></span>`).join('')}</div>
+        <div class="p-sizes">O'lcham: ${esc(p.sizes.join(', '))}</div>
         <div class="p-prices">
           <div class="p-cash">${fmt(p.price)}${p.oldPrice ? ` <span style="font-size:12px;color:#B0A39C;text-decoration:line-through;font-family:Inter;font-weight:500;">${fmt(p.oldPrice)}</span>`:''}</div>
         </div>
-        <button class="p-order-btn" data-id="${p.id}">Buyurtma berish</button>
+        <button class="p-order-btn" data-id="${esc(p.id)}">Buyurtma berish</button>
       </div>
     `;
     grid.appendChild(card);
@@ -738,8 +741,8 @@ function openModal(id){
   const sizeSel = document.getElementById('custSize');
   const colorSel = document.getElementById('custColor');
   document.getElementById('orderForm').reset();
-  sizeSel.innerHTML = currentProduct.sizes.map(s=>`<option value="${s}">${s}</option>`).join('');
-  colorSel.innerHTML = currentProduct.colors.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+  sizeSel.innerHTML = currentProduct.sizes.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+  colorSel.innerHTML = currentProduct.colors.map(c=>`<option value="${esc(c.name)}">${esc(c.name)}</option>`).join('');
   document.getElementById('orderPrice').textContent = fmt(currentProduct.price);
 
   document.getElementById('modalFormView').style.display = 'block';
@@ -796,7 +799,12 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'), 3200);
 }
 
-renderGrid();
+fetch('/api/products')
+  .then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(list => { PRODUCTS = list; renderGrid(); })
+  .catch(() => {
+    document.getElementById('productGrid').innerHTML = `<p style="grid-column:1/-1;color:var(--charcoal-soft);padding:40px 0;text-align:center;">Mahsulotlarni yuklab bo'lmadi. Sahifani yangilab ko'ring.</p>`;
+  });
 </script>
 </body>
 </html>
